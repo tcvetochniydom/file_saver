@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка файлов</title>
+</head>
+<body>
+    <h1>Загрузите файл</h1>
+    <input type="file" id="fileInput" />
+    <button id="uploadButton">Загрузить</button>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('uploadButton').onclick = function() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                // Замените URL на конечную точку вашего сервиса, который принимает файлы
+                fetch('https://your-backend-endpoint.com/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').innerText = 'Файл загружен успешно!';
+                })
+                .catch(error => {
+                    document.getElementById('message').innerText = 'Ошибка при загрузке файла.';
+                    console.error(error);
+                });
+            } else {
+                document.getElementById('message').innerText = 'Пожалуйста, выберите файл.';
+            }
+        };
+    </script>
+</body>
+</html>
